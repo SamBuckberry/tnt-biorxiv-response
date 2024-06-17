@@ -1,0 +1,127 @@
+---
+title: "Sendai TaqMan qPCR analysis"
+author: "Sam Buckberry"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r, message=FALSE, error=FALSE, comment=FALSE, warning=FALSE, cache=TRUE}
+source("project-functions.R")
+# Load the readxl library
+# Load the modified dataset from the new Excel file
+data <- read_excel("pcr-data/TaqMan_assays.xlsx")
+
+# Replace spaces in column names with underscores
+colnames(data) <- gsub(" ", "", colnames(data))
+
+data <- reshape2::melt(data)
+
+# Replace NA values in numeric columns with 'ND'
+data <- data %>%
+  mutate(across(where(is.numeric), ~ifelse(is.na(.), "ND", .)))
+
+data$RNA_origin <- ifelse(test = startsWith(as.character(data$variable), "RL"),
+                     yes = "RNA used for RNA-seq",
+                     no = "New RNA extract from experiment cell pellet")
+
+# Convert data values for 'ND' into numeric NA for plotting purposes
+data$value <- as.numeric(as.character(data$value))
+
+# Replace NA back with 'ND' for annotation on the plot
+data$value_label <- ifelse(is.na(data$value), "ND", "")
+
+# Add a grouping column based on the sample names
+data$Group <- case_when(
+  grepl("ESC", data$variable) ~ "ESC",
+  grepl("TNT", data$variable) ~ "TNT",
+  grepl("naive", data$variable) ~ "Naive",
+  grepl("primed", data$variable) ~ "Primed",
+  TRUE ~ "Other"  # This catches any samples not fitting the above categories
+)
+
+data <- data %>%
+  mutate(Group_key = case_when(
+    Group == "ESC" ~ 1,
+    Group == "TNT" ~ 2,
+    Group == "Naive" ~ 3,
+    Group == "Primed" ~ 4,
+    TRUE ~ 5
+  )) %>%
+  arrange(Group_key, variable) %>%
+  mutate(variable = fct_inorder(variable))
+
+# Create separate data frames for each type of plot based on 'Method'
+ct_data <- data %>% filter(Method == "CT values")
+delta_ct_data <- data %>% filter(Method == "ΔCT")
+two_neg_delta_ct_data <- data %>% filter(Method == "2^-ΔCt")
+
+## Add zero's for not detected. 
+two_neg_delta_ct_data$value[two_neg_delta_ct_data$value_label == "ND"] <- 0 
+
+
+## We assayed extra samples from the freezer to be sure, but will subset here to only plot samples for Buckberry et al. (2023) Nature for clarity
+
+remove_samples <- c("RL1956_38F_primed", "RL1965_38F_naive")
+
+
+
+two_neg_delta_ct_data <- two_neg_delta_ct_data[!two_neg_delta_ct_data$variable %in% remove_samples, ]
+
+## Clean up the labels and make consistent
+two_neg_delta_ct_data$variable <- str_replace_all(two_neg_delta_ct_data$variable,
+                                              pattern = "Mel1", replacement = "MEL1") %>%
+    #str_replace("_1", " Rep 1") %>% str_replace("_2", " Rep 2") %>%
+    #str_replace("r1", " Rep 1") %>% str_replace("r2", " Rep 2") %>% 
+    str_replace("naive", "Naive") %>% str_replace("r1", "Rep 1") %>% str_replace("r2", "Rep 2") %>% str_replace("RL1974_TNT", "RL1974_Mel1_TNT") %>%
+    str_replace("Mel1", "MEL1") %>% str_replace_all("_", " ")
+
+
+## Add rep
+no_rep <- !grepl(pattern = "Rep", x = two_neg_delta_ct_data$variable)
+
+two_neg_delta_ct_data$variable[no_rep] <- str_c(two_neg_delta_ct_data$variable[no_rep],
+                                                " Rep 1")
+
+
+label_sigfig <- function(x) {
+  signif(x, 3)
+}
+
+gg <- ggplot(two_neg_delta_ct_data,
+       aes(x = variable, y = value, fill = Group, colour = Group)) +
+    geom_col(position = "dodge", width = 0.5, alpha=0.5) +
+    geom_point() +
+    scale_colour_manual(values = c(TNT="#EEBC4C", Naive = "#0072B2", ESC = "#AFB4B7")) +
+    scale_fill_manual(values = c(TNT="#EEBC4C", Naive = "#0072B2", ESC = "#AFB4B7")) +
+    scale_y_continuous(labels = label_sigfig) +
+    facet_grid(Gene~RNA_origin+Group, scales = "free",space = "free_x",  drop = TRUE) +
+    labs(x = "", y = "Relative expression (2^-ΔCt GAPDH)") +
+    sams_pub_theme() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
+          legend.title = element_blank()) + # Remove legend title
+    geom_text(aes(label = value_label, colour="black", fill="black"), vjust = -1.5,
+              position = position_dodge(width = 0.9), size=2) +
+    ggtitle("TaqMan qPCR quantification of Sendai virus and exogenous reprogramming factors")
+
+
+gg
+```
+
+```{r, include=FALSE}
+pdf("taqman-qpcr-plots.pdf", height = 5, width = 6)
+gg
+dev.off()
+```
+
+
+```{r}
+sessionInfo()
+```
+
