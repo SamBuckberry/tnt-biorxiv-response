@@ -27,6 +27,9 @@ library(rtracklayer)
 library(plotly)
 library(dplyr)
 library(data.table)
+library(readxl)
+library(forcats)
+
 
 sams_pub_theme <- function(legend_pos = "none", x.text.angle = 45, hjust = 1,
                            y.text.angle = 0, line_point = 0.5) {
