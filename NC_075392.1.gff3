@@ -1,0 +1,19 @@
+##gff-version 3
+#!gff-spec-version 1.21
+#!processor NCBI annotwriter
+##sequence-region NC_075392.1 1 15384
+##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=3052731
+NC_075392.1	RefSeq	region	1	15384	.	+	.	ID=NC_075392.1:1..15384;Dbxref=taxon:3052731;gbkey=Src;genome=genomic;mol_type=genomic RNA;old-name=Sendai virus;strain=Nagoya
+NC_075392.1	RefSeq	gene	120	1694	.	+	.	ID=gene-QKC79_gp1;Dbxref=GeneID:80527609;Name=NP;gbkey=Gene;gene=NP;gene_biotype=protein_coding;locus_tag=QKC79_gp1
+NC_075392.1	RefSeq	CDS	120	1694	.	+	0	ID=cds-YP_010790270.1;Parent=gene-QKC79_gp1;Dbxref=GenBank:YP_010790270.1,GeneID:80527609;Name=YP_010790270.1;gbkey=CDS;gene=NP;locus_tag=QKC79_gp1;product=nucleoprotein;protein_id=YP_010790270.1
+NC_075392.1	RefSeq	gene	1844	3550	.	+	.	ID=gene-QKC79_gp2;Dbxref=GeneID:80527607;Name=P;gbkey=Gene;gene=P;gene_biotype=protein_coding;locus_tag=QKC79_gp2
+NC_075392.1	RefSeq	CDS	1844	3550	.	+	0	ID=cds-YP_010790271.1;Parent=gene-QKC79_gp2;Dbxref=GenBank:YP_010790271.1,GeneID:80527607;Name=YP_010790271.1;gbkey=CDS;gene=P;locus_tag=QKC79_gp2;product=phosphoprotein;protein_id=YP_010790271.1
+NC_075392.1	RefSeq	gene	3669	4715	.	+	.	ID=gene-QKC79_gp3;Dbxref=GeneID:80527608;Name=M;gbkey=Gene;gene=M;gene_biotype=protein_coding;locus_tag=QKC79_gp3
+NC_075392.1	RefSeq	CDS	3669	4715	.	+	0	ID=cds-YP_010790272.1;Parent=gene-QKC79_gp3;Dbxref=GenBank:YP_010790272.1,GeneID:80527608;Name=YP_010790272.1;gbkey=CDS;gene=M;locus_tag=QKC79_gp3;product=matrix protein;protein_id=YP_010790272.1
+NC_075392.1	RefSeq	gene	4866	6563	.	+	.	ID=gene-QKC79_gp4;Dbxref=GeneID:80527606;Name=F;gbkey=Gene;gene=F;gene_biotype=protein_coding;locus_tag=QKC79_gp4
+NC_075392.1	RefSeq	CDS	4866	6563	.	+	0	ID=cds-YP_010790273.1;Parent=gene-QKC79_gp4;Dbxref=GenBank:YP_010790273.1,GeneID:80527606;Name=YP_010790273.1;gbkey=CDS;gene=F;locus_tag=QKC79_gp4;product=fusion protein;protein_id=YP_010790273.1
+NC_075392.1	RefSeq	gene	6693	8420	.	+	.	ID=gene-QKC79_gp5;Dbxref=GeneID:80527604;Name=HN;gbkey=Gene;gene=HN;gene_biotype=protein_coding;locus_tag=QKC79_gp5
+NC_075392.1	RefSeq	CDS	6693	8420	.	+	0	ID=cds-YP_010790274.1;Parent=gene-QKC79_gp5;Dbxref=GenBank:YP_010790274.1,GeneID:80527604;Name=YP_010790274.1;gbkey=CDS;gene=HN;locus_tag=QKC79_gp5;product=Hemagglutinin-Neuraminidase protein;protein_id=YP_010790274.1
+NC_075392.1	RefSeq	gene	8556	15242	.	+	.	ID=gene-QKC79_gp6;Dbxref=GeneID:80527605;Name=L;gbkey=Gene;gene=L;gene_biotype=protein_coding;locus_tag=QKC79_gp6
+NC_075392.1	RefSeq	CDS	8556	15242	.	+	0	ID=cds-YP_010790275.1;Parent=gene-QKC79_gp6;Dbxref=GenBank:YP_010790275.1,GeneID:80527605;Name=YP_010790275.1;gbkey=CDS;gene=L;locus_tag=QKC79_gp6;product=Large protein;protein_id=YP_010790275.1
+
