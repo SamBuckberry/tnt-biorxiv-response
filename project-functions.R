@@ -50,4 +50,3 @@ sams_pub_theme <- function(legend_pos = "none", x.text.angle = 45, hjust = 1,
               axis.ticks = element_line(color = 'black', size = line_mm))
     return(custom_theme)
 }
-s

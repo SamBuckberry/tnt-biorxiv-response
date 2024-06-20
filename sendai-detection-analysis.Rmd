@@ -118,6 +118,14 @@ knitr::kable(sample_dat, booktabs = TRUE, latex_options = "scale_down") %>%
   kableExtra::kable_styling()
 ```
 
+```{r}
+pdf("rna-seq-quant-ercc-table.png")
+knitr::kable(sample_dat, booktabs = TRUE, latex_options = "scale_down") %>%
+  kableExtra::kable_styling()
+dev.off()
+```
+
+
 
 #### RNA fragment assignment metrics
 
