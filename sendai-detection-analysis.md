@@ -14,8 +14,8 @@ hiPSC samples.”
 Presented here is a re-analysis of the RNA-seq data from the MEL1
 isogenic control experiments from Buckberry et al. (Figure 4).
 
-The aim of this study is to evalulate the detection and quantificaiton
-of Sendai virus (SeV) genes in MEL1 ESC, fibroblast, primed, NtP and TNT
+The aim of this study is to evaluate the detection and quantification of
+Sendai virus (SeV) genes in MEL1 ESC, fibroblast, primed, NtP and TNT
 samples.
 
 ## Methods
@@ -43,7 +43,7 @@ FASTQ files were processed with `fastp` with the options
 
 Reference genomes GRCh38, NC_075392.1 and ERCC spike in sequences, along
 with gencode v27 primary assembly annotations, transposable element
-annotations, and sendai gene models were used to create a STAR alignment
+annotations, and Sendai gene models were used to create a STAR alignment
 index.
 
 Reads were aligned with the STAR default options.
@@ -985,7 +985,9 @@ df_concat <- mapply(function(x, y) paste0(x, " (", y, "%)"),
 summary_table <- data.frame(Library=sample_dat$Library, Group=sample_dat$Group,
               Passage = sample_dat$Passage, reads = count_sum_df$Total, df_concat)
 
-colnames(summary_table)[4:8] <- c("Total assigned fragments", "Gencode genes", "Transposable elements", "ERCC controls", "Sendai virus genes" )
+colnames(summary_table)[4:8] <- c("Total assigned fragments", "Gencode genes",
+                                  "Transposable elements", "ERCC controls",
+                                  "Sendai virus genes" )
 
 ## Clean up
 summary_table$Group <- str_replace(string = summary_table$Group, pattern = "N2P",
