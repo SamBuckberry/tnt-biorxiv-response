@@ -2,17 +2,12 @@
 title: "RNA-seq re-analysis: MEL1 reprogramming system"
 author: "Sam Buckberry"
 date: "`r Sys.Date()`"
-output: 
-  html_document:
-    code_folding: hide
+output: github_document
+always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r, message=FALSE, warning=FALSE, error=FALSE}
-source("project-functions.R")
 ```
 
 ## Background
@@ -20,7 +15,7 @@ De Los Angeles et al. state "Surprisingly, control MEL1 hESC samples from Buckbe
 
 Presented here is a re-analysis of the RNA-seq data from the MEL1 isogenic control experiments from Buckberry et al. (Figure 4). 
 
-The aim of this study is to evalulate the detection and quantificaiton of Sendai virus (SeV) genes in MEL1 ESC, fibroblast, primed, NtP and TNT samples. 
+The aim of this study is to evaluate the detection and quantification of Sendai virus (SeV) genes in MEL1 ESC, fibroblast, primed, NtP and TNT samples. 
 
 ## Methods
 
@@ -31,7 +26,7 @@ RNA was extracted using the Agencourt RNAdvance Cell v2 (Beckman Coulter) system
 FASTQ files were processed with `fastp` with the options `--detect_adapter_for_pe --trim_poly_g --trim_front1 1 --trim_tail1 1 --correction`
 
 ### Reference genomes and alignment
-Reference genomes GRCh38, NC_075392.1 and ERCC spike in sequences, along with gencode v27 primary assembly annotations, transposable element annotations, and sendai gene models were used to create a STAR alignment index.  
+Reference genomes GRCh38, NC_075392.1 and ERCC spike in sequences, along with gencode v27 primary assembly annotations, transposable element annotations, and Sendai gene models were used to create a STAR alignment index.  
 
 Reads were aligned with the STAR default options.  
 
@@ -45,6 +40,11 @@ Quantification was performed with featureCounts with the options `featureCounts 
 **This conservative approach only counts reads that are [1] primary alignments (actually already filtered for with unique alignments), [2] not PCR or optical/exAmp duplicates, [3] both pairs are mapped and not discordant, and [4] reads that overlap the feature being counted by at least 75%.** 
 
 ## Results
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+source("project-functions.R")
+```
+
 ```{r, cache=TRUE, message=FALSE, warning=FALSE}
 ## Sample metadata
 sample_dat <- data.table::fread("polyA_RNAseq_sample_table.tsv")
@@ -183,7 +183,9 @@ df_concat <- mapply(function(x, y) paste0(x, " (", y, "%)"),
 summary_table <- data.frame(Library=sample_dat$Library, Group=sample_dat$Group,
               Passage = sample_dat$Passage, reads = count_sum_df$Total, df_concat)
 
-colnames(summary_table)[4:8] <- c("Total assigned fragments", "Gencode genes", "Transposable elements", "ERCC controls", "Sendai virus genes" )
+colnames(summary_table)[4:8] <- c("Total assigned fragments", "Gencode genes",
+                                  "Transposable elements", "ERCC controls",
+                                  "Sendai virus genes" )
 
 ## Clean up
 summary_table$Group <- str_replace(string = summary_table$Group, pattern = "N2P",
